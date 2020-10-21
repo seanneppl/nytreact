@@ -1,4 +1,5 @@
-const axios = require('axios');
+import { Request, Response } from 'express';
+import axios from 'axios';
 
 // axios.get('https://site.com/', {
 //   params: {
@@ -6,8 +7,8 @@ const axios = require('axios');
 //   }
 // })
 
-module.exports = {
-  findAll: function (req, res) {
+const searchController = {
+  findAll: function (req: Request, res: Response): void {
     const { query } = req.params;
     const url = `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${query}`;
     // const start = startYear ? `&begin_date=${startYear}0101` : '';
@@ -19,3 +20,5 @@ module.exports = {
     // res.status(200).json({ success: "test succeeded" })
   },
 };
+
+export default searchController;

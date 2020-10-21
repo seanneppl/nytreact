@@ -1,5 +1,7 @@
-const router = require("express").Router();
-const articlesController = require("../../controllers/articlesController");
+import { Router } from 'express';
+import articlesController from "../../controllers/articlesController";
+
+const router: Router = Router();
 
 router.route("/")
   .get(articlesController.findAll)
@@ -11,4 +13,4 @@ router
   .put(articlesController.update)
   .delete(articlesController.remove);
 
-module.exports = router;
+export default router;

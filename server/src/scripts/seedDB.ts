@@ -1,11 +1,9 @@
-const mongoose = require("mongoose");
-const db = require("../models");
+import { connect } from "mongoose";
+import db from "../models";
 
+const uri: string = process.env.ATLAS_URI || '';
 
-mongoose.connect(
-  process.env.MONGODB_URI ||
-  "mongodb://localhost/nytreadinglist"
-);
+connect(uri);
 
 const articleSeed = [
   {
@@ -59,7 +57,7 @@ const articleSeed = [
   {
     title: "Total Recall: My Unbelievably True Life Story",
     url: "https://www.nytimes.com/2018/07/05/magazine/art-of-war.html",
-    pubdate:"2018-08-02T14:30:04+0000",
+    pubdate: "2018-08-02T14:30:04+0000",
     date: new Date(Date.now())
   },
   {
@@ -73,11 +71,11 @@ const articleSeed = [
 db.Article
   .remove({})
   .then(() => db.Article.collection.insertMany(articleSeed))
-  .then(data => {
+  .then((data) => {
     console.log(data.result.n + " records inserted!");
     process.exit(0);
   })
-  .catch(err => {
+  .catch((err: Error) => {
     console.error(err);
     process.exit(1);
   });

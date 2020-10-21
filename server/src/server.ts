@@ -1,14 +1,17 @@
-const express = require("express");
-const path = require("path");
+import express = require('express');
+import { Application, Request, Response } from 'express';
+import path = require("path");
+import mongoose = require('mongoose');
+import routes from "./routes";
+import cors = require('cors');
+import * as dotenv from 'dotenv';
+
 const PORT = process.env.PORT || 3001;
-const mongoose = require("mongoose");
-const app = express();
-const routes = require("./routes");
-const cors = require('cors');
+const app: Application = express();
+dotenv.config();
+
 // const ioPORT = 3002;
 // const io = require('socket.io')();
-
-require('dotenv').config();
 
 // Define middleware here
 app.use(express.json());
@@ -25,18 +28,21 @@ if (process.env.NODE_ENV === "production") {
 app.use(routes);
 
 // Connect to the Mongo DB
-const uri = process.env.ATLAS_URI;
+
+const uri: string = process.env.ATLAS_URI || '';
+
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
-).catch(err => console.log(err));
+).catch((err: Error) => console.log(err)); // eslint-disable-line
 
 const connection = mongoose.connection;
-connection.once('open', (err) => {
+connection.once('open', (err: Error) => {
   console.log("MongoDB database connection established successfully");
-}).catch(err => console.log(err));
+  if (err) console.log(err);
+});
 
 // Send every other request to the React app
 // Define any API routes before this runs
-app.get("*", (req, res) => {
+app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 

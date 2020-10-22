@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const articlesController_1 = __importDefault(require("../../controllers/articlesController"));
+const searchController_1 = __importDefault(require("../../controllers/searchController"));
 const router = express_1.Router();
 router.route("/:query")
-    .get(articlesController_1.default.findAll);
+    .get(searchController_1.default.search);
 exports.default = router;

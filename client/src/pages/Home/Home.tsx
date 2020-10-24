@@ -5,18 +5,20 @@ import ListItem from "../../components/ListItem";
 // import openSocket from 'socket.io-client';
 // const socket = openSocket('http://localhost:3002');
 
-export interface IArticle {
-  title: string
-  url: string
-  pubdate: string
-  date: string
-}
+import { IArticle } from '../../types/interfaces';
+
+// import { Item } from "./item.interface";
+// export interface Items {
+//   [key: number]: Item;
+// }
 
 const Home = () => {
   const [term, setTerm] = useState('');
   const [startYear, setStartYear] = useState('');
   const [endYear, setEndYear] = useState('');
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<IArticle[]>([]);
+
+  // const [todos, setTodos] = useState<ITodo[]>([])
 
   const handleFormSubmit = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault();

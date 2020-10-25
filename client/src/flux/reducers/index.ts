@@ -1,9 +1,8 @@
 import { combineReducers } from 'redux';
-import itemsReducer from './itemsReducer';
 import articlesReducer from './articlesReducer';
-
+import searchReducer from './searchReducer';
 
 export default combineReducers({
   articles: articlesReducer,
-  items: itemsReducer,
+  search: searchReducer,
 });

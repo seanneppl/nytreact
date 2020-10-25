@@ -15,7 +15,15 @@ const searchController = {
         const url = `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${query}`;
         const api = `&api-key=${process.env.NYT_API_KEY}`;
         axios_1.default.get(url + api)
-            .then(response => res.json(response.data))
+            .then(response => {
+            const articlesData = response.data;
+            if (articlesData) {
+                res.json(response.data.response.docs);
+            }
+            else {
+                res.json(response.data);
+            }
+        })
             .catch(err => console.log(err));
     },
 };

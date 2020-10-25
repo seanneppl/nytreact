@@ -1,16 +1,9 @@
 import React, { useEffect } from "react";
 import ListItem from "../../components/ListItem";
-// import API from "../../utils/API";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getArticles, deleteArticle } from '../../flux/actions/articlesActions';
-import { IArticle } from '../../types/interfaces';
-
-interface RootState {
-  articles: {
-    articles: IArticle[];
-  }
-}
+import { IArticle, RootState } from '../../types/interfaces';
 
 const Results = () => {
   const dispatch = useDispatch();
@@ -18,7 +11,7 @@ const Results = () => {
 
   useEffect(() => {
     dispatch(getArticles());
-  }, [])
+  }, [dispatch])
 
   const onDelete = (id: string) => () => dispatch(deleteArticle(id));
 
@@ -40,7 +33,6 @@ const Results = () => {
               <ul className="list-group">
                 {
                   articles.map((each: IArticle, index: number) =>
-
                     <ListItem
                       title={each.title}
                       pubdate={each.pubdate}
@@ -53,7 +45,6 @@ const Results = () => {
                   )
                 }
               </ul>
-
             </div>
           </div>
         </div>

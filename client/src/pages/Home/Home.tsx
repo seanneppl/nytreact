@@ -1,44 +1,37 @@
 import React, { useState } from "react";
 import Input from "../../components/Input";
-import API from "../../utils/API";
 import ListItem from "../../components/ListItem";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../types/interfaces';
+import { searchArticles, clearSearch } from "../../flux/actions/searchActions";
+import { addArticle } from '../../flux/actions/articlesActions';
+
 // import openSocket from 'socket.io-client';
 // const socket = openSocket('http://localhost:3002');
-
-import { IArticle } from '../../types/interfaces';
-
-// import { Item } from "./item.interface";
-// export interface Items {
-//   [key: number]: Item;
-// }
 
 const Home = () => {
   const [term, setTerm] = useState('');
   const [startYear, setStartYear] = useState('');
   const [endYear, setEndYear] = useState('');
-  const [results, setResults] = useState<IArticle[]>([]);
+
+  const results = useSelector((state: RootState) => state.search.articles);
+  const dispatch = useDispatch();
 
   // const [todos, setTodos] = useState<ITodo[]>([])
 
   const handleFormSubmit = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault();
-    API.search({ term, startYear, endYear })
-      .then(res => {
-        setResults(res.data.response.docs);
-        console.log(res.data.response.docs);
-      })
-      .catch(err => console.log(err));
+    dispatch(searchArticles({ term, startYear, endYear }))
   };
 
   const handleSave = (id: number) => {
     const article: any = results[id];
-    API.saveArticle({
+
+    dispatch(addArticle({
       title: article.headline.main,
       url: article.web_url,
       pubdate: article.pub_date
-    })
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+    }))
 
     //socket .emit goes here
     // socket.emit('save', results[id].headline.main);
@@ -47,7 +40,7 @@ const Home = () => {
 
   const handleClear = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    setResults([])
+    dispatch(clearSearch());
   };
 
   return (
@@ -90,12 +83,10 @@ const Home = () => {
                   onChange={(e: React.FormEvent<HTMLInputElement>) => setEndYear(e.currentTarget.value)}
                   for={"end-year"}
                 />
-
                 <button onClick={handleFormSubmit} type="submit" className="btn btn-default" id="run-search">
                   <i className="fa fa-search"></i> Search</button>
                 <button onClick={handleClear} className="btn btn-default" id="clear-all">
                   <i className="fa fa-trash"></i> Clear Results</button>
-
               </form>
             </div>
           </div>

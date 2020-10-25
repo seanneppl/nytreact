@@ -121,5 +121,29 @@ export interface IArticle {
   title: string
   url: string
   pubdate: string
-  date: string
+  date?: string
+}
+
+export interface ISearchArticle {
+  title: string
+  url: string
+  pubdate: string
+}
+
+export interface ISearch {
+  term: string;
+  startYear?: string;
+  endYear?: string;
+}
+
+export interface RootState {
+  articles: {
+    articles: IArticle[];
+    loading: false;
+  }
+  search: {
+    term: string;
+    articles: [];
+    loading: boolean;
+  }
 }
